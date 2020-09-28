@@ -21,31 +21,47 @@ public class GridData : MonoBehaviour
         return instance;
     }
 
-    public FloorGrid GenerateGridFromFile(FloorTile[] floorTiles, ObjectTile[] objectTiles, WallTile[] wallTiles, string filePath)
+    public IEnumerator GenerateGridFromFile(FloorTile[] floorTiles, ObjectTile[] objectTiles, WallTile[] wallTiles, string filePath)
     {
         string file = File.ReadAllText(filePath);
         char currChar;
-        for (int i = 0; i < 50; i++)
+        Texture2D texture;
+
+        for (int charPos = 0, x = 0, z = 0; charPos < file.Length; charPos++, x++)
         {
-            for (int j = 0; j < 50; j++)
+            texture = null;
+            currChar = file[charPos];
+            if (currChar == '\n')
             {
-                currChar = file[i * j + j];
+                z++;
+                x = -1;
+
+            }
+            else {
                 switch (currChar)
                 {
-                    case '\n':
-                        break;
-                        
                     case 'W':
-
+                        texture = wallTiles[0].texture;
                         break;
                     case 'F':
+                        texture = floorTiles[0].texture;
                         break;
                 }
+                GameObject newObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                newObj.transform.position = new Vector3(z, 0, x);
+                newObj.transform.localScale = Vector3.one;
+                MeshRenderer renderer = newObj.GetComponent<MeshRenderer>();
+                if (texture == null)
+                    renderer.material = transparentMaterial;
+                else
+                    renderer.material.mainTexture = texture;
             }
+            yield return new WaitForSeconds(0.0002f);
+
         }
 
         
-        return new FloorGrid(floorTiles, objectTiles, wallTiles);
+        //return new FloorGrid(floorTiles, objectTiles, wallTiles);
     }
 
     public FloorGrid GenerateGrid(FloorTile[] floorTiles, ObjectTile[] objectTiles, WallTile[] wallTiles, int width, int length)

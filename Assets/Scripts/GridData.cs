@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
+using System.IO;
 
 public class GridData : MonoBehaviour
 {
@@ -18,6 +19,33 @@ public class GridData : MonoBehaviour
     public static GridData GetInstance()
     {
         return instance;
+    }
+
+    public FloorGrid GenerateGridFromFile(FloorTile[] floorTiles, ObjectTile[] objectTiles, WallTile[] wallTiles, string filePath)
+    {
+        string file = File.ReadAllText(filePath);
+        char currChar;
+        for (int i = 0; i < 50; i++)
+        {
+            for (int j = 0; j < 50; j++)
+            {
+                currChar = file[i * j + j];
+                switch (currChar)
+                {
+                    case '\n':
+                        break;
+                        
+                    case 'W':
+
+                        break;
+                    case 'F':
+                        break;
+                }
+            }
+        }
+
+        
+        return new FloorGrid(floorTiles, objectTiles, wallTiles);
     }
 
     public FloorGrid GenerateGrid(FloorTile[] floorTiles, ObjectTile[] objectTiles, WallTile[] wallTiles, int width, int length)

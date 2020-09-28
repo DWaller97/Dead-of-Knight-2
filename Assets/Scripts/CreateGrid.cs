@@ -10,7 +10,8 @@ public class CreateGrid : MonoBehaviour
 
     void Start()
     {
-
+        //LevelWriter.WriteTestLevel("Level 1");
+        LevelReader.ReadLevelTest("Assets/Levels/Level 1.txt");
         GridData.GetInstance().GenerateGrid(floorTile, objectTile, wallTile, 20, 20);       
     }
 

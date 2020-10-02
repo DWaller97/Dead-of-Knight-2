@@ -18,6 +18,8 @@ public class GridData : MonoBehaviour
 
     public static GridData GetInstance()
     {
+        if (!instance)
+            instance = new GridData();
         return instance;
     }
 
@@ -98,5 +100,19 @@ public class GridData : MonoBehaviour
             }
         }
         return new FloorGrid(floorTiles, objectTiles, wallTiles);
+    }
+    public void GenerateEmptyGrid(int size)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+
+                    GameObject newObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    newObj.transform.position = new Vector3(i, 0, j);
+                    newObj.transform.localScale = Vector3.one * 0.8f;
+                
+            }
+        }
     }
 }
